@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="UConverter.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UConverter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:util="using:UConverter.Util"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" VerticalAlignment="Top" Margin="8">
+            <ListView x:Name="MenuList" SelectionChanged="MenuList_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" Padding="15"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        
+        <GridView Margin="30,50,30,50" Grid.Column="1" Name="GridView" >
+            <GridView.ItemTemplate >
+                <DataTemplate >
+                    <StackPanel Margin="20" Width="200">
+                        <StackPanel.Resources>
+                            <util:StringFormatConverter x:Key="StringFormatConverter" />
+                        </StackPanel.Resources>
+                        <TextBlock Text="{Binding Name}" Margin="0,0,0,10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto"/>
+                        <TextBox Tag="{Binding AssemblyPropertyName}" LostFocus="UIElement_OnLostFocus" KeyDown="UIElement_OnKeyDown">
+                            <TextBox.Text>
+                                <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource StringFormatConverter}"
+		                                 ConverterParameter="{}{0:0.#################}" />
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+            <GridView.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <WrapGrid Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+    </Grid>
+</Page>
